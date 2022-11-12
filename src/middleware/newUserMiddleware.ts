@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { newUserSchema } from "../schemas/userSchema.js";
-import { DataUserEntity } from "../protocols/dataUser.js";
+import { dataUserEntity } from "../protocols/dataUser.js";
 
 function validateSignUp(req: Request, res: Response, next: NextFunction) {
-  const validationNewUser = newUserSchema.validate(req.body as DataUserEntity, {
+  const validationNewUser = newUserSchema.validate(req.body as dataUserEntity, {
     abortEarly: false,
   });
 

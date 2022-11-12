@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { registerNewUser, registers } from "../repositories/userRepository.js";
 import { serverErrorResponse } from "./controllerHelper.js";
-import { DataUserEntity } from "../protocols/dataUser.js";
+import { dataUserEntity } from "../protocols/dataUser.js";
 
 //check if user is registered and register new user
 async function signUp(req: Request, res: Response) {
-  const { username, email, password } = req.body as DataUserEntity;
+  const { username, email, password } = req.body as dataUserEntity;
 
   const userRegistered = (await registers(email)).rowCount;
   if (userRegistered) {

@@ -1,8 +1,8 @@
-export type DataUser = {
+export type dataUser = {
   id: number;
   username: string;
   email: string;
   password: string;
 };
 
-export type DataUserEntity = Omit<DataUser, "id">;
+export type dataUserEntity = Omit<dataUser, "id">;
