@@ -15,7 +15,7 @@ async function registerAuthor(req: Request, res: Response) {
 
     if (authorRegistered.rowCount) {
       const { id } = authorRegistered.rows[0];
-      return res.send(`Author is registered by id ${id}`);
+      return res.send(`Author is registered by ID: ${id}`);
     }
 
     const newAuthor = await registerNewAuthor(name);

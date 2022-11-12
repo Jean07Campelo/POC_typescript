@@ -4,14 +4,16 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import userRoutes from "./routes/userRoutes.js";
-import dataBooksRoutes from "./routes/authorRoutes.js";
+import authorRoutes from "./routes/authorRoutes.js";
+import companyRoutes from "./routes/companyRoutes.js";
 
 const server = express();
 server.use(cors());
 server.use(express.json());
 
 server.use(userRoutes);
-server.use(dataBooksRoutes);
+server.use(authorRoutes);
+server.use(companyRoutes);
 
 const PORT = process.env.PORT;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
