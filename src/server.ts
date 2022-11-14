@@ -8,6 +8,7 @@ import authorRoutes from "./routes/authorRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
 import bookRoutes from "./routes/bookRoutes.js"
 import statusRoutes from "./routes/statusRoutes.js";
+import libraryRoutes from "./routes/libraryRoutes.js";
 
 const server = express();
 server.use(cors());
@@ -18,6 +19,7 @@ server.use(authorRoutes);
 server.use(companyRoutes);
 server.use(bookRoutes);
 server.use(statusRoutes);
+server.use(libraryRoutes);
 
 const PORT = process.env.PORT;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
