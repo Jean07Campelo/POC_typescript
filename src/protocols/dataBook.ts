@@ -7,6 +7,7 @@ export type dataBook = {
   synopsis: string;
   bookCover: string;
   pages: number;
+  status?: string;
 };
 
 export type dataBookEntity = Omit<dataBook, "id">;

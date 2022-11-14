@@ -6,8 +6,9 @@ import {
   newRegisterLibraryEntity,
   checkReadingEntity,
   updateReadingEntity,
-  deleteReadinfEntity
+  deleteReadinfEntity,
 } from "../protocols/dataLibrary.js";
+import { dataBook } from "../protocols/dataBook.js";
 
 function registerNewReading({
   book,
@@ -40,9 +41,42 @@ function updateReadingRegister({
   );
 }
 
-
-function deleteReadingRegister({id, userId}: deleteReadinfEntity) : Promise<QueryResult<deleteReadinfEntity>> {
-  return connection.query(`DELETE FROM ${database.TABLE_LIBRARY} WHERE id = $1 AND "userId" = $2;`, [id, userId]);
+function deleteReadingRegister({
+  id,
+  userId,
+}: deleteReadinfEntity): Promise<QueryResult<deleteReadinfEntity>> {
+  return connection.query(
+    `DELETE FROM ${database.TABLE_LIBRARY} WHERE id = $1 AND "userId" = $2;`,
+    [id, userId]
+  );
 }
 
-export { registerNewReading, checkReading, updateReadingRegister, deleteReadingRegister  };
+function getPersonalLibrary(userId: number): Promise<QueryResult<dataBook>> {
+  return connection.query(
+    `
+  SELECT b.id, 
+  b.name, b.year,
+  ${database.TABLE_AUTHOR}.name as author, 
+  "publishingCompany".name as company,
+  ${database.TABLE_STATUS}.name as status,
+  b.synopsis, b."bookCover", b.pages
+  
+  FROM ${database.TABLE_BOOKS} b
+  JOIN ${database.TABLE_AUTHOR} ON b.${database.TABLE_AUTHOR} = ${database.TABLE_AUTHOR}.id
+  JOIN "publishingCompany" ON b.company = "publishingCompany".id
+  JOIN ${database.TABLE_LIBRARY} ON ${database.TABLE_LIBRARY}.book = b.id
+  JOIN ${database.TABLE_STATUS} ON ${database.TABLE_LIBRARY}.status = ${database.TABLE_STATUS}.id
+
+  WHERE ${database.TABLE_LIBRARY}."userId" = $1
+  ORDER BY ${database.TABLE_AUTHOR}.name;`,
+    [userId]
+  );
+}
+
+export {
+  registerNewReading,
+  checkReading,
+  updateReadingRegister,
+  deleteReadingRegister,
+  getPersonalLibrary,
+};

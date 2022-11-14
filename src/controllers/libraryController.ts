@@ -7,6 +7,7 @@ import {
   checkReading,
   updateReadingRegister,
   deleteReadingRegister,
+  getPersonalLibrary,
 } from "../repositories/libraryRepository.js";
 
 async function newReadingRegister(req: Request, res: Response) {
@@ -67,4 +68,34 @@ async function deleteReading(req: Request, res: Response) {
   }
 }
 
-export { newReadingRegister, updateReading, deleteReading };
+async function showPersonalLibrary(req: Request, res: Response) {
+  const emailUser = req.headers.authorization;
+
+  try {
+    const userIsValid = await registers(emailUser);
+
+    if (userIsValid.rowCount === 0) {
+      return res
+        .status(400)
+        .send(`Don't exixts user registered with "${emailUser}"`);
+    }
+
+    const userId = userIsValid.rows[0].id;
+
+    const mylibrary = await getPersonalLibrary(userId);
+
+    if (mylibrary.rowCount === 0) {
+      return res
+        .status(200)
+        .send(`Don't exists registers for ${userIsValid.rows[0].username}`);
+    }
+    res.status(200).send(mylibrary.rows);
+  } catch (error) {}
+}
+
+export {
+  newReadingRegister,
+  updateReading,
+  deleteReading,
+  showPersonalLibrary,
+};
