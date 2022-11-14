@@ -6,6 +6,7 @@ import {
   newRegisterLibraryEntity,
   checkReadingEntity,
   updateReadingEntity,
+  deleteReadinfEntity
 } from "../protocols/dataLibrary.js";
 
 function registerNewReading({
@@ -39,4 +40,9 @@ function updateReadingRegister({
   );
 }
 
-export { registerNewReading, checkReading, updateReadingRegister };
+
+function deleteReadingRegister({id, userId}: deleteReadinfEntity) : Promise<QueryResult<deleteReadinfEntity>> {
+  return connection.query(`DELETE FROM ${database.TABLE_LIBRARY} WHERE id = $1 AND "userId" = $2;`, [id, userId]);
+}
+
+export { registerNewReading, checkReading, updateReadingRegister, deleteReadingRegister  };

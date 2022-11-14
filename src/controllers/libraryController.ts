@@ -6,6 +6,7 @@ import {
   registerNewReading,
   checkReading,
   updateReadingRegister,
+  deleteReadingRegister,
 } from "../repositories/libraryRepository.js";
 
 async function newReadingRegister(req: Request, res: Response) {
@@ -49,4 +50,21 @@ async function updateReading(req: Request, res: Response) {
   }
 }
 
-export { newReadingRegister, updateReading };
+async function deleteReading(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  const emailUser = req.headers.authorization;
+
+  try {
+    const userIsValid = await registers(emailUser);
+    const userId = userIsValid.rows[0].id;
+    const successfullyDeleted = await deleteReadingRegister({ id, userId });
+    if (successfullyDeleted.rowCount === 0) {
+      return res.sendStatus(400);
+    }
+    res.sendStatus(200);
+  } catch (error) {
+    serverErrorResponse(res, error);
+  }
+}
+
+export { newReadingRegister, updateReading, deleteReading };

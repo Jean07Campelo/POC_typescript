@@ -10,3 +10,5 @@ export type newRegisterLibraryEntity = Omit<newRegisterLibrary, "id">;
 export type checkReadingEntity = Omit<newRegisterLibrary, "id" | "status">;
 
 export type updateReadingEntity = Omit<newRegisterLibrary, "userId" | "book">;
+
+export type deleteReadinfEntity = Omit<newRegisterLibrary, "book" | "status">;
